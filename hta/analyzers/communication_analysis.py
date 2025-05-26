@@ -36,10 +36,25 @@ class CommunicationAnalysis:
                 lambda x: get_kernel_type(sym_table[x["name"]]), axis=1
             )
 
+            print(gpu_kernels["name"])
+
             # Isolate communication and computation kernels and merge each one of them.
+            print("gpu_kernels before merge: ",
+                gpu_kernels.copy()
+            )
+            print("comp_kernel before merge: ",
+                gpu_kernels[
+                    gpu_kernels["kernel_type"].eq(KernelType.COMPUTATION.name)
+                ].copy()
+            )
             comp_kernels = merge_kernel_intervals(
                 gpu_kernels[
                     gpu_kernels["kernel_type"].eq(KernelType.COMPUTATION.name)
+                ].copy()
+            )
+            print("comm_kernel before merge: ",
+                gpu_kernels[
+                    gpu_kernels["kernel_type"].eq(KernelType.COMMUNICATION.name)
                 ].copy()
             )
             comm_kernels = merge_kernel_intervals(
@@ -70,12 +85,20 @@ class CommunicationAnalysis:
             shifted_overlap = overlap.merge(
                 status_df.shift(-1).dropna(), left_index=True, right_index=True
             )
+            print(comm_kernels)
+            print("--------")
+            print(comm_kernels["end"])
+            print("---------")
+            print(comm_kernels["ts"])
+            print("------")
+            print((comm_kernels["end"] - comm_kernels["ts"]).sum())
             return (shifted_overlap["time_y"] - shifted_overlap["time_x"]).sum() / (
-                comm_kernels["end"] - comm_kernels["ts"]
+                comm_kernels["end"] - comm_kernels["ts"] + 1.2111
             ).sum()
 
         result: Dict[str, List[float]] = defaultdict(list)
         for rank, trace_df in t.traces.items():
+            print(trace_df.head())
             result["rank"].append(rank)
             result["comp_comm_overlap_ratio"].append(
                 get_comm_comp_overlap_value(trace_df)
@@ -100,6 +123,6 @@ class CommunicationAnalysis:
             )
 
             fig.update_layout(yaxis_tickformat=".2%")
-            fig.show()
+            fig.write_image('comm_comp_hta.png')
 
         return result_df[["rank", "comp_comm_overlap_pctg"]]
