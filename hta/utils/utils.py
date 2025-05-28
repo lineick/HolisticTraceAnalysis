@@ -56,14 +56,14 @@ def normalize_path(path: str) -> str:
 
 # NCCKL_KERNEL_RE = re.compile("Send|Recv|AllReduce|Broadcast|Reduce|AllGather|ReduceScatter|Barrier|Sync|Wait", re.IGNORECASE)
 # NCCL_KERNEL_RE = re.compile(r"\b(?:nccl|rccl).*(?:ncclComm|ncclDevComm|rcclComm).*Kernel.*")
-NCCL_KERNEL_RE = re.compile(
-    r"\b(?:nccl|rccl)[a-zA-Z0-9_]*Kernel[a-zA-Z0-9_]*\b.*\b(?:ncclComm|ncclDevComm|rcclComm)?\b.*\b(?:Send|Recv|AllReduce|Broadcast|Reduce|AllGather|ReduceScatter|Barrier|Sync|Wait)\b",
-    re.IGNORECASE,
-)
 # NCCL_KERNEL_RE = re.compile(
-#     r"\b(?:nccl|rccl).*Kernel",
+#     r"\b(?:nccl|rccl)[a-zA-Z0-9_]*Kernel[a-zA-Z0-9_]*\b.*\b(?:ncclComm|ncclDevComm|rcclComm)?\b.*\b(?:Send|Recv|AllReduce|Broadcast|Reduce|AllGather|ReduceScatter|Barrier|Sync|Wait)\b",
 #     re.IGNORECASE,
 # )
+NCCL_KERNEL_RE = re.compile(
+    r"\b(?:nccl|rccl).*Kernel",
+    re.IGNORECASE,
+)
 
 
 def is_comm_kernel(name: str) -> bool:

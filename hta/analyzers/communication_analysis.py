@@ -100,6 +100,7 @@ class CommunicationAnalysis:
             )
 
             fig.update_layout(yaxis_tickformat=".2%")
+            fig.show()
             fig.write_image('comm_comp_hta.png')
 
         return result_df[["rank", "comp_comm_overlap_pctg"]]

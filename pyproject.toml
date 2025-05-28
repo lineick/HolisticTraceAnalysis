@@ -23,6 +23,3 @@ skip_glob = ["examples/*"]
 [[tool.mypy.overrides]]
 module = "yaml"
 ignore_missing_imports = true
-
-[tool.jupytext]
-formats = "ipynb,py:percent"
