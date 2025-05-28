@@ -9,8 +9,7 @@ from hta.common.trace_parser import (
 def main():
     # set_default_trace_parsing_backend(ParserBackend.IJSON_BATCH_AND_COMPRESS)
     analyzer = TraceAnalysis(
-        trace_dir="stack-trace-ddp"
-        use_gzip=True,
+        trace_dir="stack-trace-ddp",
     )
     overlap_df = analyzer.get_comm_comp_overlap(visualize=True)
 
