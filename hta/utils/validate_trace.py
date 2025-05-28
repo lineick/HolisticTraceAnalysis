@@ -225,5 +225,5 @@ if __name__ == "__main__":
                 for k, v in err_data.items():
                     print(f"{k}: {v}")
             else:
-                print(f"Error Data: {err_data}")
+                # print(f"Error Data: {err_data}")
             print("----")
